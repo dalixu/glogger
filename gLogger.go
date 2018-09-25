@@ -18,9 +18,11 @@ type GLogger interface {
 	Fatalf(format string, v ...interface{})
 }
 
+var defaultEmptyLogger = EmptyLogger{}
+
 //NewEmpty 返回空实现
 func NewEmpty() GLogger {
-	return &EmptyLogger{}
+	return &defaultEmptyLogger
 }
 
 //NewStd 返回标准库实现
