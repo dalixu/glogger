@@ -30,6 +30,32 @@ func NewStd() GLogger {
 	return &StdLogger{}
 }
 
+//Factory logFactory
+type Factory interface {
+	GetLogger(name string) GLogger
+}
+
+var factory Factory = EmptyLoggerFactory{}
+
+//SetFactoryImpl 设置一个factory
+func SetFactoryImpl(fy Factory) {
+	factory = fy
+}
+
+//GetFactory 得到1个Facotry
+func GetFactory() Factory {
+	return factory
+}
+
+//EmptyLoggerFactory 空LoggerFactory
+type EmptyLoggerFactory struct {
+}
+
+//GetLogger implement Factory
+func (factory EmptyLoggerFactory) GetLogger(name string) GLogger {
+	return NewEmpty()
+}
+
 //EmptyLogger 空实现
 type EmptyLogger struct {
 }
@@ -80,6 +106,15 @@ func (eb *EmptyLogger) Fatal(v ...interface{}) {
 
 //Fatalf 打印Fatalf日志
 func (eb *EmptyLogger) Fatalf(format string, v ...interface{}) {
+}
+
+//StdLoggerFactory 标准库实现的Factory
+type StdLoggerFactory struct {
+}
+
+//GetLogger implement Factory
+func (factory StdLoggerFactory) GetLogger(name string) GLogger {
+	return NewStd()
 }
 
 //StdLogger 默认的标准库logger实现
